@@ -1,0 +1,8 @@
+{
+  "alias": "audit-log",
+  "name": "Audit log",
+  "description": "Track who changed what and when. View the audit log under Settings for full history.",
+  "version": "1.0.0",
+  "icon": "clipboard-document-list",
+  "active": true
+}

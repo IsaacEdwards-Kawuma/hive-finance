@@ -1,0 +1,8 @@
+{
+  "alias": "webhooks",
+  "name": "Webhooks",
+  "description": "Notify external systems when events occur (e.g. invoice.paid). Configure in Settings → Webhooks.",
+  "version": "1.0.0",
+  "icon": "bolt",
+  "active": true
+}

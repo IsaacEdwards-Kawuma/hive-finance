@@ -1,0 +1,40 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "HiveStack IntelliCash API", "version": "1.0.0", "description": "Accounting API for invoices, bills, journal entries, and reports." },
+  "servers": [{ "url": "/api/v1", "description": "API v1" }],
+  "paths": {
+    "/invoices": {
+      "get": { "summary": "List invoices", "tags": ["Invoices"], "parameters": [{ "name": "per_page", "in": "query", "schema": { "type": "integer" } }, { "name": "customer_id", "in": "query", "schema": { "type": "integer" } }] },
+      "post": { "summary": "Create invoice", "tags": ["Invoices"], "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "customer_id": { "type": "integer" }, "invoice_date": { "type": "string", "format": "date" }, "due_date": { "type": "string", "format": "date" }, "currency": { "type": "string" }, "items": { "type": "array" } } } } } }
+    },
+    "/invoices/{id}": {
+      "get": { "summary": "Show invoice", "tags": ["Invoices"] },
+      "put": { "summary": "Update invoice", "tags": ["Invoices"] },
+      "delete": { "summary": "Delete invoice", "tags": ["Invoices"] }
+    },
+    "/invoices/{id}/payments": { "post": { "summary": "Record payment", "tags": ["Invoices"] } },
+    "/invoices/{id}/pdf": { "get": { "summary": "Invoice as HTML (print/PDF)", "tags": ["Invoices"] } },
+    "/bills": { "get": { "summary": "List bills", "tags": ["Bills"] }, "post": { "summary": "Create bill", "tags": ["Bills"] } },
+    "/bills/{id}": { "get": { "summary": "Show bill", "tags": ["Bills"] }, "put": { "summary": "Update bill", "tags": ["Bills"] } },
+    "/bills/{id}/payments": { "post": { "summary": "Record payment", "tags": ["Bills"] } },
+    "/accounts": { "get": { "summary": "Chart of accounts", "tags": ["Accounts"] }, "post": { "summary": "Create account", "tags": ["Accounts"] } },
+    "/accounts/{id}": { "get": { "summary": "Show account", "tags": ["Accounts"] }, "put": { "summary": "Update account", "tags": ["Accounts"] }, "delete": { "summary": "Delete account", "tags": ["Accounts"] } },
+    "/accounts/{id}/balance": { "get": { "summary": "Account balance as of date", "tags": ["Accounts"], "parameters": [{ "name": "as_of", "in": "query", "schema": { "type": "string", "format": "date" } }] } },
+    "/journal-entries": { "get": { "summary": "List journal entries", "tags": ["Journal"] }, "post": { "summary": "Create journal entry", "tags": ["Journal"] } },
+    "/journal-entries/{id}/post": { "post": { "summary": "Post journal entry", "tags": ["Journal"] } },
+    "/reports/profit-loss": { "get": { "summary": "Profit & Loss", "tags": ["Reports"] } },
+    "/reports/balance-sheet": { "get": { "summary": "Balance Sheet", "tags": ["Reports"] } },
+    "/reports/trial-balance": { "get": { "summary": "Trial Balance", "tags": ["Reports"] } },
+    "/reports/cash-flow": { "get": { "summary": "Cash flow", "tags": ["Reports"] } },
+    "/reports/tax-summary": { "get": { "summary": "Tax summary", "tags": ["Reports"] } },
+    "/permissions": { "get": { "summary": "Current user permissions", "tags": ["Auth"] } },
+    "/roles": { "get": { "summary": "List roles", "tags": ["Settings"] }, "post": { "summary": "Create role", "tags": ["Settings"] } },
+    "/roles/{id}": { "put": { "summary": "Update role", "tags": ["Settings"] }, "delete": { "summary": "Delete role", "tags": ["Settings"] } }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+  "security": [{ "bearerAuth": [] }]
+}

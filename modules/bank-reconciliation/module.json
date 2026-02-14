@@ -1,0 +1,8 @@
+{
+  "alias": "bank-reconciliation",
+  "name": "Bank reconciliation",
+  "description": "Match bank statement balances with your books. Mark transactions as reconciled from Banking.",
+  "version": "1.0.0",
+  "icon": "banknotes",
+  "active": true
+}

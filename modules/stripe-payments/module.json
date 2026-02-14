@@ -1,0 +1,8 @@
+{
+  "alias": "stripe-payments",
+  "name": "Stripe payments",
+  "description": "Accept card payments on invoices via Stripe. Customers can pay with a link; funds go to your Stripe account.",
+  "version": "1.0.0",
+  "icon": "credit-card",
+  "active": true
+}

@@ -1,0 +1,8 @@
+{
+  "alias": "payment-reminders",
+  "name": "Payment reminders",
+  "description": "Send automatic email reminders for overdue invoices. Configure days after due in Company settings.",
+  "version": "1.0.0",
+  "icon": "bell",
+  "active": true
+}

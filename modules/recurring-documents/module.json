@@ -1,0 +1,8 @@
+{
+  "alias": "recurring-documents",
+  "name": "Recurring invoices & bills",
+  "description": "Create recurring invoices and bills that auto-generate on a schedule (daily, weekly, monthly).",
+  "version": "1.0.0",
+  "icon": "arrow-path",
+  "active": true
+}

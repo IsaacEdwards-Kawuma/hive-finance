@@ -1,0 +1,13 @@
+{
+    "alias": "expense-claims",
+    "name": "Expense Claims",
+    "description": "Employee expense submission with receipt attachments and approval workflows",
+    "version": "1.0.0",
+    "icon": "document-text",
+    "active": 0,
+    "providers": [],
+    "reports": [],
+    "widgets": [],
+    "settings": [],
+    "requires": []
+}

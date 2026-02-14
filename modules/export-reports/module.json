@@ -1,0 +1,8 @@
+{
+  "alias": "export-reports",
+  "name": "Export reports",
+  "description": "Export Profit & Loss, Balance Sheet, and other reports to PDF. Download or print from the Reports section.",
+  "version": "1.0.0",
+  "icon": "document-arrow-down",
+  "active": true
+}

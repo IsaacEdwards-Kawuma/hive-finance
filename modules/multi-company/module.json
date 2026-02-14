@@ -1,0 +1,8 @@
+{
+  "alias": "multi-company",
+  "name": "Multi-company",
+  "description": "Switch between multiple companies from Settings. Each company has its own chart of accounts and transactions.",
+  "version": "1.0.0",
+  "icon": "building-office-2",
+  "active": true
+}
