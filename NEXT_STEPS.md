@@ -35,10 +35,11 @@ Your repo is ready. Follow this order.
 
 1. Sign up at [render.com](https://render.com).
 2. **New → Web Service** → connect your GitHub repo.
-3. Settings:
-   - **Build command:** `composer install --no-dev --optimize-autoloader && php artisan key:generate --force`
-   - **Start command:** `php artisan serve --host=0.0.0.0 --port=${PORT:-8000}`
-4. **Environment** (use your real values):
+3. **Important:** Set **Environment** to **Docker** (so Render uses the repo’s `Dockerfile`; Render has no native PHP).
+4. Settings when using Docker:
+   - **Build command:** leave empty (Docker build runs automatically).
+   - **Start command:** leave empty (the Dockerfile `CMD` starts the app).
+5. **Environment** (use your real values):
    - `APP_ENV` = `production`
    - `APP_DEBUG` = `false`
    - `APP_KEY` = *(run `php artisan key:generate --show` locally)*
@@ -48,8 +49,8 @@ Your repo is ready. Follow this order.
    - `FRONTEND_URL` = *(leave empty for now; set in step 5 after Vercel deploy)*
    - `SESSION_DRIVER` = `database`
    - `SESSION_SECURE_COOKIE` = `true`
-5. Deploy, then in **Shell** run: `php artisan migrate --force` and optionally `php artisan db:seed --class=RolePresetsSeeder --force`.
-6. Copy your Render URL (e.g. `https://hive-finances-api.onrender.com`) for the next steps.
+6. Deploy, then in **Shell** run: `php artisan migrate --force` and optionally `php artisan db:seed --class=RolePresetsSeeder --force`.
+7. Copy your Render URL (e.g. `https://hive-finances-api.onrender.com`) for the next steps.
 
 ---
 
