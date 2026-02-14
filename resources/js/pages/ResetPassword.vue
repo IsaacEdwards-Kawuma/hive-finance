@@ -32,7 +32,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
+import { profileApi } from '@/api';
 
 const router = useRouter();
 const route = useRoute();
@@ -58,7 +58,7 @@ async function submit() {
   }
   loading.value = true;
   try {
-    await axios.post('/api/reset-password', {
+    await profileApi().post('/reset-password', {
       token: token.value,
       email: email.value,
       password: password.value,

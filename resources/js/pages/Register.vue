@@ -34,7 +34,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { profileApi } from '@/api';
 
 const router = useRouter();
 const name = ref('');
@@ -52,7 +52,7 @@ async function submit() {
   error.value = '';
   loading.value = true;
   try {
-    const { data } = await axios.post('/api/register', {
+    const { data } = await profileApi().post('/register', {
       name: name.value,
       email: email.value,
       password: password.value,

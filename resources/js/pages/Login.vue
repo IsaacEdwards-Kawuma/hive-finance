@@ -33,7 +33,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
+import { profileApi } from '@/api';
 
 const router = useRouter();
 const route = useRoute();
@@ -64,7 +64,7 @@ async function submit() {
   error.value = '';
   loading.value = true;
   try {
-    const { data } = await axios.post('/api/login', { email: email.value, password: password.value });
+    const { data } = await profileApi().post('/login', { email: email.value, password: password.value });
     localStorage.setItem('token', data.token);
     if (data.current_company_id) localStorage.setItem('companyId', data.current_company_id);
     if (data.user) localStorage.setItem('user', JSON.stringify({ name: data.user.name, email: data.user.email, locale: data.user.locale }));

@@ -23,7 +23,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { profileApi } from '@/api';
 
 const email = ref('');
 const error = ref('');
@@ -35,7 +35,7 @@ async function submit() {
   success.value = '';
   loading.value = true;
   try {
-    await axios.post('/api/forgot-password', { email: email.value });
+    await profileApi().post('/forgot-password', { email: email.value });
     success.value = 'If that email exists, we sent a reset link. Check your inbox.';
   } catch (e) {
     error.value = e.response?.data?.message || 'Something went wrong';
