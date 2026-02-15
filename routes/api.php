@@ -1,7 +1,22 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+
+// Deploy check: open in browser to verify DB and APP_KEY (no secrets exposed)
+Route::get('/deploy-check', function () {
+    $checks = ['app_key' => !empty(config('app.key')), 'database' => false];
+    try {
+        DB::connection()->getPdo();
+        DB::connection()->getDatabaseName();
+        $checks['database'] = true;
+    } catch (\Throwable $e) {
+        $checks['database_error'] = $e->getMessage();
+    }
+    $checks['ok'] = $checks['app_key'] && $checks['database'];
+    return response()->json($checks);
+});
 
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
 Route::post('/register', [\App\Http\Controllers\Api\AuthController::class, 'register']);
