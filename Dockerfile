@@ -30,5 +30,5 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader
 
 EXPOSE 8000
 
-# Render sets PORT; default 8000 for local
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+# Run migrations and seed (idempotent) then start server — no Shell needed on Render
+CMD ["sh", "-c", "php artisan migrate --force && php artisan db:seed --class=RolePresetsSeeder --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]

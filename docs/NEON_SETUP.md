@@ -65,21 +65,14 @@ One **DB_URL** (your Neon connection string) is all you need; the rest are set i
 
 ---
 
-## 4. Run migrations (and optional seed)
+## 4. Migrations and seed (automatic)
 
-After the first deploy that uses Neon:
+The **Dockerfile** runs migrations and the role seeder when the container starts, so you don’t need to use the Render Shell:
 
-1. On Render, open your service → **Shell** (or use a one-off job if you use one).
-2. Run:
-   ```bash
-   php artisan migrate --force
-   ```
-3. (Optional) Seed role presets:
-   ```bash
-   php artisan db:seed --class=RolePresetsSeeder --force
-   ```
+- Every deploy/restart: `php artisan migrate --force` then `php artisan db:seed --class=RolePresetsSeeder --force`, then the server starts.
+- Tables are created in Neon on first run; roles are created for existing companies (safe to run repeatedly).
 
-Your Laravel app will then be using Neon for all data (users, companies, invoices, etc.).
+Your Laravel app then uses Neon for all data (users, companies, invoices, etc.).
 
 ---
 
@@ -88,9 +81,7 @@ Your Laravel app will then be using Neon for all data (users, companies, invoice
 - [ ] Neon project created at [neon.tech](https://neon.tech)
 - [ ] Connection string copied
 - [ ] **Render** → Environment: `DB_CONNECTION=pgsql`, `DB_URL=<Neon URI>`, and (if not in Blueprint) `SESSION_DRIVER=database`, `CACHE_STORE=database`, `QUEUE_CONNECTION=database`
-- [ ] Service redeployed
-- [ ] Shell: `php artisan migrate --force`
-- [ ] (Optional) Shell: `php artisan db:seed --class=RolePresetsSeeder --force`
+- [ ] Service redeployed (migrations and seed run automatically on startup)
 
 ---
 
@@ -101,7 +92,7 @@ Your Laravel app will then be using Neon for all data (users, companies, invoice
   - In Neon, ensure the project isn’t suspended (free tier may spin down after inactivity).
 
 - **“relation does not exist”:**  
-  Run migrations: `php artisan migrate --force` in the Render Shell.
+  Migrations run automatically when the container starts. If you still see this, trigger a redeploy or run `php artisan migrate --force` in the Render Shell.
 
 - **Laravel still using SQLite:**  
   Ensure **DB_CONNECTION** is set to **pgsql** and **DB_URL** (or **DATABASE_URL**) is set on Render. Redeploy after changing env vars.
