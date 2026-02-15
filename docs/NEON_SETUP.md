@@ -96,3 +96,5 @@ Your Laravel app then uses Neon for all data (users, companies, invoices, etc.).
 
 - **Laravel still using SQLite:**  
   Ensure **DB_CONNECTION** is set to **pgsql** and **DB_URL** (or **DATABASE_URL**) is set on Render. Redeploy after changing env vars.
+
+- **Error "missing = in connection info string" or "Database: sql 'postgresql://...'":** Laravel is using your full Neon URL as the database name. On Render Environment, set **only** **DB_CONNECTION** = `pgsql` and **DB_URL** = your full Neon connection string. Do **not** put the URL in **DB_DATABASE**. Remove **DB_HOST**, **DB_PORT**, **DB_DATABASE**, **DB_USERNAME**, **DB_PASSWORD** if they are set. Save and redeploy.
