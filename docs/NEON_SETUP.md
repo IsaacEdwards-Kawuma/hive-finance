@@ -47,6 +47,31 @@ One **DB_URL** (your Neon connection string) is all you need; the rest are set i
 
 ## 3. Use it on Render
 
+### Exactly what to put and where
+
+- **Where:** [dashboard.render.com](https://dashboard.render.com) → your Web Service (Laravel API) → **Environment** (left sidebar) → **Environment Variables**.
+- **What to set:**
+
+| Key | Value |
+|-----|--------|
+| `DB_CONNECTION` | `pgsql` |
+| `DB_URL` | The Neon URI only (see below) |
+| `FRONTEND_URL` | Your Vercel app URL, e.g. `https://hive-finance.vercel.app` (no trailing slash). Needed for CORS so the frontend can call the API. Leave empty to allow any origin. |
+| `SESSION_DRIVER` | `database` |
+| `CACHE_STORE` | `database` |
+| `QUEUE_CONNECTION` | `database` |
+
+- **`DB_URL` value:** In Neon go to your project → **Connection string**. Neon often shows:
+  ```text
+  psql 'postgresql://neondb_owner:...@ep-....neon.tech/neondb?sslmode=require&channel_binding=require'
+  ```
+  You can paste that **entire line** into Render’s `DB_URL` value; the app strips the `psql '` and trailing `'` and uses the URI. Or paste only the part inside the quotes (starting with `postgresql://`).
+- **Do not set** (delete if they exist): `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+- **CORS (login/register blocked):** If your Vercel app cannot call the API, set `FRONTEND_URL` on Render to your Vercel URL exactly, e.g. `https://hive-finance.vercel.app` (no trailing slash). Redeploy after changing env.
+- Click **Save Changes** so Render redeploys.
+
+---
+
 1. Open your **Render** dashboard → your **Laravel API service** (Web Service).
 2. Go to **Environment** (or **Environment Variables**).
 3. Add or update (everything using Neon):

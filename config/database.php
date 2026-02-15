@@ -83,44 +83,21 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => (function () {
-            $url = env('DB_URL', env('DATABASE_URL'));
-            if (!$url && preg_match('#^postgres(ql)?://#i', env('DB_DATABASE', ''))) {
-                $url = env('DB_DATABASE');
-            }
-            if ($url) {
-                $parsed = parse_url($url);
-                $path = isset($parsed['path']) ? ltrim($parsed['path'], '/') : 'laravel';
-                $query = isset($parsed['query']) ? $parsed['query'] : '';
-                parse_str($query, $queryParams);
-                return [
-                    'driver' => 'pgsql',
-                    'host' => $parsed['host'] ?? '127.0.0.1',
-                    'port' => $parsed['port'] ?? 5432,
-                    'database' => $path ?: 'laravel',
-                    'username' => $parsed['user'] ?? 'root',
-                    'password' => $parsed['pass'] ?? '',
-                    'charset' => env('DB_CHARSET', 'utf8'),
-                    'prefix' => '',
-                    'prefix_indexes' => true,
-                    'search_path' => 'public',
-                    'sslmode' => $queryParams['sslmode'] ?? env('DB_SSLMODE', 'require'),
-                ];
-            }
-            return [
-                'driver' => 'pgsql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '5432'),
-                'database' => env('DB_DATABASE', 'laravel'),
-                'username' => env('DB_USERNAME', 'root'),
-                'password' => env('DB_PASSWORD', ''),
-                'charset' => env('DB_CHARSET', 'utf8'),
-                'prefix' => '',
-                'prefix_indexes' => true,
-                'search_path' => 'public',
-                'sslmode' => env('DB_SSLMODE', 'prefer'),
-            ];
-        })(),
+        'pgsql' => [
+            'driver' => 'pgsql',
+            // Support DB_URL, DATABASE_URL, or URL pasted in DB_DATABASE by mistake (Neon, Render)
+            'url' => env('DB_URL', env('DATABASE_URL')) ?: (preg_match('#^postgres(ql)?://#i', env('DB_DATABASE', '')) ? env('DB_DATABASE') : null),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => preg_match('#^postgres(ql)?://#i', env('DB_DATABASE', '')) ? 'laravel' : env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

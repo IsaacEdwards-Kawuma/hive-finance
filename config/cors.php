@@ -19,16 +19,20 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => array_filter(array_merge(
-        array_map('trim', explode(',', env('FRONTEND_URL', '*'))),
+    'allowed_origins' => array_filter(array_map(function ($o) {
+        $o = trim($o);
+        return $o === '' ? null : rtrim($o, '/');
+    }, array_merge(
+        explode(',', env('FRONTEND_URL', '*')),
         [
             // Add more origins here if needed (no trailing slash):
             // 'https://app.mycompany.com',
         ]
-    )),
+    ))),
 
     'allowed_origins_patterns' => [
         '/^https:\/\/[a-z0-9-]+\.vercel\.app$/',
+        '/^https:\/\/[a-z0-9-]+-[a-z0-9]+\.vercel\.app$/',  // preview deployments
     ],
 
     'allowed_headers' => ['*'],
