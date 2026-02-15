@@ -1,6 +1,21 @@
 # Set up Neon (PostgreSQL) for Hive Finances
 
-Use Neon as the database for your Laravel API on Render. Follow these steps in order.
+Use **Neon for everything**: app data, sessions, cache, and queues all run on one Neon PostgreSQL database. Follow these steps in order.
+
+---
+
+## What runs on Neon
+
+With the env vars below, Laravel uses the same Neon connection for:
+
+| Laravel feature | Env var | Uses Neon |
+|-----------------|---------|-----------|
+| Default database (users, companies, invoices, etc.) | `DB_CONNECTION=pgsql`, `DB_URL=<Neon URI>` | ✓ |
+| Sessions | `SESSION_DRIVER=database` | ✓ |
+| Cache | `CACHE_STORE=database` | ✓ |
+| Queues (jobs) | `QUEUE_CONNECTION=database` | ✓ |
+
+One **DB_URL** (your Neon connection string) is all you need; the rest are set in `render.yaml` or below.
 
 ---
 
@@ -34,14 +49,17 @@ Use Neon as the database for your Laravel API on Render. Follow these steps in o
 
 1. Open your **Render** dashboard → your **Laravel API service** (Web Service).
 2. Go to **Environment** (or **Environment Variables**).
-3. Add or update:
+3. Add or update (everything using Neon):
 
-   | Key            | Value |
-   |----------------|--------|
+   | Key | Value |
+   |-----|--------|
    | `DB_CONNECTION` | `pgsql` |
-   | `DB_URL`        | *(paste the full Neon connection string)* |
+   | `DB_URL` | *(paste the full Neon connection string)* |
+   | `SESSION_DRIVER` | `database` |
+   | `CACHE_STORE` | `database` |
+   | `QUEUE_CONNECTION` | `database` |
 
-   If Render already provides **DATABASE_URL** (e.g. for a Render Postgres add-on), you can set **DB_URL** to that same value. The app reads **DB_URL** first, then **DATABASE_URL**.
+   If you use the repo’s **render.yaml** Blueprint, `SESSION_DRIVER`, `CACHE_STORE`, and `QUEUE_CONNECTION` are already set; you only need to set **DB_URL** (and other sync: false vars). The app reads **DB_URL** first, or **DATABASE_URL** if **DB_URL** is not set.
 
 4. **Save** the environment. Render will redeploy the service so the app uses Neon.
 
@@ -69,7 +87,7 @@ Your Laravel app will then be using Neon for all data (users, companies, invoice
 
 - [ ] Neon project created at [neon.tech](https://neon.tech)
 - [ ] Connection string copied
-- [ ] **Render** → Environment: `DB_CONNECTION=pgsql`, `DB_URL=<Neon URI>`
+- [ ] **Render** → Environment: `DB_CONNECTION=pgsql`, `DB_URL=<Neon URI>`, and (if not in Blueprint) `SESSION_DRIVER=database`, `CACHE_STORE=database`, `QUEUE_CONNECTION=database`
 - [ ] Service redeployed
 - [ ] Shell: `php artisan migrate --force`
 - [ ] (Optional) Shell: `php artisan db:seed --class=RolePresetsSeeder --force`
