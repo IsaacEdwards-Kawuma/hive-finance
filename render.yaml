@@ -1,14 +1,27 @@
-# Render Blueprint: Laravel API as Docker (required — Render has no native PHP)
-# Use this by: Render Dashboard → New → Blueprint → connect this repo.
-# Set sync: false vars in the dashboard: APP_KEY, DB_URL (Neon), APP_URL, FRONTEND_URL.
-# Everything below uses Neon: default DB, sessions, cache, and queue all run on Neon (PostgreSQL).
+# Render Blueprint: Node (Vue frontend) + Docker (Laravel API)
+# New → Blueprint → connect this repo. Set sync: false in dashboard: APP_KEY, DB_URL, APP_URL, FRONTEND_URL, VITE_API_URL (frontend).
+# PHP (Laravel) must use Docker on Render; the frontend runs as a Node service.
 
 services:
+  # Vue frontend — Node native (no Docker)
+  - type: web
+    runtime: node
+    name: hive-finance
+    buildCommand: npm install && npm run build:render
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_API_URL
+        sync: false
+        # Set to your API URL, e.g. https://hive-finance-api.onrender.com (no trailing slash)
+
+  # Laravel API — Docker (required; Render has no native PHP)
   - type: web
     runtime: docker
     name: hive-finance-api
+    dockerfilePath: ./Dockerfile
     envVars:
-      # App
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
@@ -17,12 +30,10 @@ services:
         sync: false
       - key: APP_URL
         sync: false
-      # Neon (PostgreSQL) — one connection string for all data below
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_URL
         sync: false
-      # All of these use the Neon connection above
       - key: SESSION_DRIVER
         value: database
       - key: CACHE_STORE
@@ -31,6 +42,6 @@ services:
         value: database
       - key: SESSION_SECURE_COOKIE
         value: "true"
-      # Vercel frontend (for CORS)
       - key: FRONTEND_URL
         sync: false
+        # Set to frontend URL, e.g. https://hive-finance.onrender.com (your Node service URL)
