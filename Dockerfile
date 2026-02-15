@@ -1,7 +1,7 @@
 # Laravel API for Render (PHP + Composer)
 FROM php:8.2-cli
 
-# Install system deps + PHP extensions Laravel needs
+# Install system deps + PHP extensions Laravel needs (libpq-dev for PostgreSQL)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql pgsql mbstring xml zip bcmath opcache \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
