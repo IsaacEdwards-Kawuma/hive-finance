@@ -85,10 +85,11 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DB_URL', env('DATABASE_URL')),
+            // Support DB_URL, DATABASE_URL, or URL pasted in DB_DATABASE by mistake (Neon, Render)
+            'url' => env('DB_URL', env('DATABASE_URL')) ?: (preg_match('#^postgres(ql)?://#i', env('DB_DATABASE', '')) ? env('DB_DATABASE') : null),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => preg_match('#^postgres(ql)?://#i', env('DB_DATABASE', '')) ? 'laravel' : env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => env('DB_CHARSET', 'utf8'),
