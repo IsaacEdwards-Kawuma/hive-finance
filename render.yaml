@@ -1,30 +1,31 @@
 # Render Blueprint: Laravel API as Docker (required — Render has no native PHP)
 # Use this by: Render Dashboard → New → Blueprint → connect this repo.
-# Then set env vars in the service (APP_KEY, DB_URL, FRONTEND_URL, etc.).
+# Set sync: false vars in the dashboard (APP_KEY, Neon DB_URL, APP_URL, FRONTEND_URL).
 
 services:
   - type: web
     runtime: docker
     name: hive-finance-api
-    # repo: uses the repo that contains this file
-    # Dockerfile at repo root is used by default
-    # Start command: Dockerfile CMD (php artisan serve)
     envVars:
+      # App
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: "false"
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: SESSION_DRIVER
-        value: database
-      - key: SESSION_SECURE_COOKIE
-        value: "true"
       - key: APP_KEY
         sync: false
       - key: APP_URL
         sync: false
+      # Neon (PostgreSQL) — paste Neon connection string in dashboard for DB_URL
+      - key: DB_CONNECTION
+        value: pgsql
       - key: DB_URL
         sync: false
+      # Session
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      # Vercel frontend (for CORS)
       - key: FRONTEND_URL
         sync: false
